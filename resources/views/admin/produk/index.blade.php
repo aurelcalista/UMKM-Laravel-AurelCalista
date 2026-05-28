@@ -6,106 +6,465 @@
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <style>
-    .bulk-bar {
-        display: none;
-        align-items: center;
-        gap: .75rem;
-        padding: .65rem 1rem;
-        background: var(--primary-light);
-        border: 1px solid rgba(230,98,57,.3);
-        border-radius: 10px;
-        margin-bottom: .75rem;
-        animation: slideDown .2s ease;
-    }
-    .bulk-bar.show { display: flex; }
-    @keyframes slideDown { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+/* ============================================
+   VARIABLES - WARNA SEOULLICIOUS
+============================================ */
+:root {
+    --maroon: #7B1818;
+    --maroon-light: #9E2020;
+    --maroon-mid: #C23333;
+    --gold: #C9923A;
+    --cream: #FDF8F0;
+    --primary: #7B1818;
+    --primary-light: rgba(123,24,24,0.1);
+    --gray-50: #f8f9fa;
+    --gray-200: #e9ecef;
+}
 
-    .form-check-input:checked { background-color: var(--primary); border-color: var(--primary); }
-    .form-check-input:focus { box-shadow: 0 0 0 .2rem rgba(230,98,57,.2); border-color: var(--primary); }
+/* ============================================
+   BUTTON GLOBAL (Index & Edit)
+============================================ */
+/* Button Action (Edit/Hapus) - untuk tabel */
+.btn-act {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: transparent;
+    padding: 0;
+    text-decoration: none;
+}
 
-    tr.selected-row { background: rgba(230,98,57,.04) !important; }
+.btn-act.edit {
+    border-color: var(--maroon, #7B1818);
+    color: var(--maroon, #7B1818);
+}
 
-    .form-label { font-weight: 500; font-size: .8rem; color: #555; margin-bottom: .35rem; }
-    .form-control, .form-select {
-        font-size: .85rem;
-        border-color: var(--gray-200);
-        border-radius: 8px;
-        transition: border-color .15s, box-shadow .15s;
-    }
-    .form-control:focus, .form-select:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 .2rem rgba(230,98,57,.15);
-    }
-    .input-group-text {
-        background: var(--gray-50);
-        border-color: var(--gray-200);
-        font-size: .82rem;
-        color: #888;
-    }
-    .preview-box {
-        width: 100%; height: 120px;
-        border: 2px dashed var(--gray-200);
-        border-radius: 10px;
-        display: flex; align-items: center; justify-content: center;
-        overflow: hidden; background: var(--gray-50);
-        transition: border-color .15s;
-        cursor: pointer;
-    }
-    .preview-box:hover { border-color: var(--primary); }
-    .preview-box img { width: 100%; height: 100%; object-fit: cover; }
-    .preview-box .placeholder { font-size: .78rem; color: #bbb; text-align: center; }
+.btn-act.edit:hover {
+    background: var(--maroon, #7B1818);
+    color: #fff;
+    transform: translateY(-2px);
+}
 
-    .prod-thumb { width: 40px; height: 40px; object-fit: cover; border-radius: 8px; }
-    .prod-placeholder {
-        width: 40px; height: 40px; border-radius: 8px;
-        background: var(--primary-light);
-        display: flex; align-items: center; justify-content: center;
-        color: var(--primary); font-size: .9rem; flex-shrink: 0;
-    }
+.btn-act.del {
+    border-color: #dc3545;
+    color: #dc3545;
+}
 
-    .btn-act {
-        width: 32px; height: 32px;
-        border-radius: 8px;
-        display: inline-flex; align-items: center; justify-content: center;
-        border: 1px solid; font-size: .85rem;
-        transition: background .15s, color .15s;
-        cursor: pointer;
-        background: transparent;
-        padding: 0;
-    }
-    .btn-act.edit { border-color: #ffc107; color: #e0a800; }
-    .btn-act.edit:hover { background: #ffc107; color: #fff; }
-    .btn-act.del { border-color: #dc3545; color: #dc3545; }
-    .btn-act.del:hover { background: #dc3545; color: #fff; }
+.btn-act.del:hover {
+    background: #dc3545;
+    color: #fff;
+    transform: translateY(-2px);
+}
 
-    .form-sticky { position: sticky; top: 72px; }
+/* Button Simpan - untuk form edit & tambah */
+.btn-save {
+    flex: 1;
+    padding: 0.6rem;
+    background: var(--maroon, #7B1818);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
+}
 
-    .filter-pill {
-        padding: .3rem .8rem;
-        border-radius: 20px;
-        font-size: .75rem;
-        font-weight: 500;
-        border: 1px solid var(--gray-200);
-        background: #fff;
-        color: #666;
-        cursor: pointer;
-        transition: all .15s;
-        text-decoration: none;
-    }
-    .filter-pill.active, .filter-pill:hover {
-        background: var(--primary);
-        border-color: var(--primary);
-        color: #fff;
-    }
+.btn-save:hover {
+    background: var(--maroon-light, #9E2020);
+    transform: translateY(-2px);
+}
 
-    .custom-scroll{
-    overflow-x:auto;
-    overflow-y:hidden;
-    }
+.btn-save:active {
+    transform: scale(0.98);
+}
 
-    .custom-scroll table{
-        min-width:1200px;
+/* Button Batal */
+.btn-cancel {
+    padding: 0.6rem 1.25rem;
+    background: transparent;
+    color: #666;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+    background: #F5F4F2;
+    color: #333;
+    transform: translateY(-2px);
+}
+
+/* Back Button - untuk halaman edit */
+.back-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: #FAFAF9;
+    color: #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.back-btn:hover {
+    background: rgba(123,24,24,0.08);
+    border-color: var(--maroon, #7B1818);
+    color: var(--maroon, #7B1818);
+    transform: translateX(-2px);
+}
+
+/* Bulk Delete Button */
+#btnBulkDelete {
+    background: #dc3545;
+    border-color: #dc3545;
+    transition: all 0.2s ease;
+}
+
+#btnBulkDelete:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Button Tambah Produk (Submit) */
+.btn-primary {
+    background: var(--maroon, #7B1818) !important;
+    border-color: var(--maroon, #7B1818) !important;
+    transition: all 0.2s ease !important;
+}
+
+.btn-primary:hover {
+    background: var(--maroon-light, #9E2020) !important;
+    border-color: var(--maroon-light, #9E2020) !important;
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: scale(0.98) !important;
+}
+
+/* ============================================
+   STYLE KHUSUS INDEX PRODUK
+============================================ */
+.bulk-bar {
+    display: none;
+    align-items: center;
+    gap: .75rem;
+    padding: .65rem 1rem;
+    background: var(--primary-light);
+    border: 1px solid rgba(123,24,24,.3);
+    border-radius: 10px;
+    margin-bottom: .75rem;
+    animation: slideDown .2s ease;
+}
+
+.bulk-bar.show { display: flex; }
+
+@keyframes slideDown {
+    from { opacity:0; transform:translateY(-6px); }
+    to { opacity:1; transform:translateY(0); }
+}
+
+.form-check-input:checked {
+    background-color: var(--maroon, #7B1818);
+    border-color: var(--maroon, #7B1818);
+}
+
+.form-check-input:focus {
+    box-shadow: 0 0 0 .2rem rgba(123,24,24,.2);
+    border-color: var(--maroon, #7B1818);
+}
+
+tr.selected-row {
+    background: rgba(123,24,24,.04) !important;
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: .8rem;
+    color: #555;
+    margin-bottom: .35rem;
+}
+
+.form-control, .form-select {
+    font-size: .85rem;
+    border-color: var(--gray-200);
+    border-radius: 8px;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--maroon, #7B1818);
+    box-shadow: 0 0 0 .2rem rgba(123,24,24,.15);
+}
+
+.input-group-text {
+    background: var(--gray-50);
+    border-color: var(--gray-200);
+    font-size: .82rem;
+    color: #888;
+}
+
+.preview-box {
+    width: 100%;
+    height: 120px;
+    border: 2px dashed var(--gray-200);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--gray-50);
+    transition: border-color .15s;
+    cursor: pointer;
+}
+
+.preview-box:hover {
+    border-color: var(--maroon, #7B1818);
+}
+
+.preview-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.preview-box .placeholder {
+    font-size: .78rem;
+    color: #bbb;
+    text-align: center;
+}
+
+.prod-thumb {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.prod-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--primary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--maroon, #7B1818);
+    font-size: .9rem;
+    flex-shrink: 0;
+}
+
+/* Filter Pills */
+.filter-pill {
+    padding: .3rem .8rem;
+    border-radius: 20px;
+    font-size: .75rem;
+    font-weight: 500;
+    border: 1px solid var(--gray-200);
+    background: #fff;
+    color: #666;
+    cursor: pointer;
+    transition: all .15s;
+    text-decoration: none;
+}
+
+.filter-pill.active,
+.filter-pill:hover {
+    background: var(--maroon, #7B1818);
+    border-color: var(--maroon, #7B1818);
+    color: #fff;
+}
+
+/* Table Responsive */
+.custom-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.custom-scroll table {
+    min-width: 1200px;
+}
+
+/* ============================================
+   STYLE KHUSUS EDIT PRODUK
+============================================ */
+.edit-layout {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.edit-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.edit-card-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.edit-body {
+    padding: 1.5rem;
+}
+
+.field-group {
+    margin-bottom: 1.1rem;
+}
+
+.field-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 0.35rem;
+    display: block;
+}
+
+.field-label .req {
+    color: #dc3545;
+}
+
+.field-input {
+    width: 100%;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 9px;
+    font-size: 0.83rem;
+    font-family: inherit;
+    color: #1A1A1A;
+    background: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+}
+
+.field-input:focus {
+    border-color: var(--maroon, #7B1818);
+    box-shadow: 0 0 0 3px rgba(123,24,24,0.12);
+}
+
+.field-input.is-invalid {
+    border-color: #EF4444;
+}
+
+.field-error {
+    font-size: 0.7rem;
+    color: #EF4444;
+    margin-top: 0.25rem;
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+@media (max-width: 540px) {
+    .two-col {
+        grid-template-columns: 1fr;
     }
+}
+
+.divider {
+    height: 1px;
+    background: rgba(0,0,0,0.06);
+    margin: 1.25rem 0;
+}
+
+.section-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #999;
+    margin-bottom: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.section-tag::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(0,0,0,0.07);
+}
+
+/* Current Photo */
+.current-photo {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.75rem;
+    background: #FAFAF9;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+}
+
+.current-photo img {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.current-photo-info {
+    font-size: 0.75rem;
+}
+
+.current-photo-label {
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 2px;
+}
+
+.current-photo-hint {
+    color: #aaa;
+}
+
+/* Action Row */
+.action-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* Form Sticky */
+.form-sticky {
+    position: sticky;
+    top: 72px;
+}
 </style>
 @endpush
 

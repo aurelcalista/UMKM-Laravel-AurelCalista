@@ -5,248 +5,358 @@
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <style>
-    .hero-banner {
-        background: linear-gradient(135deg, #E55A2B 0%, #FF8A5C 50%, #FFBA9A 100%);
-        border-radius: 16px;
-        padding: 1.75rem 2rem;
-        color: #fff;
-        position: relative;
-        overflow: hidden;
-        margin-bottom: 1.5rem;
-    }
-    .hero-banner::before {
-        content: '';
-        position: absolute; right: -60px; top: -60px;
-        width: 220px; height: 220px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.1);
-    }
-    .hero-banner::after {
-        content: '';
-        position: absolute; right: 20px; bottom: -40px;
-        width: 140px; height: 140px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.07);
-    }
-    .hero-banner .emoji {
-        position: absolute; right: 2rem; top: 50%;
-        transform: translateY(-50%);
-        font-size: 4rem;
-        opacity: 0.18;
-        z-index: 0;
-    }
-    .hero-banner h2 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; }
-    .hero-banner p { font-size: 0.82rem; opacity: 0.85; margin: 0; }
-    .hero-badge {
-        display: inline-block;
-        background: rgba(255,255,255,0.2);
-        border: 1px solid rgba(255,255,255,0.3);
-        border-radius: 20px;
-        font-size: 0.7rem;
-        padding: 0.2rem 0.7rem;
-        margin-bottom: 0.6rem;
-        backdrop-filter: blur(4px);
-    }
+/* ============================================
+   DASHBOARD SEOULLICIOUS - WARNA MAROON
+============================================ */
+:root {
+    --maroon: #7B1818;
+    --maroon-light: #9E2020;
+    --maroon-mid: #C23333;
+    --maroon-soft: rgba(123,24,24,0.1);
+    --gold: #C9923A;
+    --gold-light: #E8B96A;
+    --cream: #FDF8F0;
+    --dark: #1C0A0A;
+}
 
-    /* ===== STAT CARDS ===== */
-    .stat-grid {
+/* Hero Banner */
+.hero-banner {
+    background: linear-gradient(135deg, var(--maroon) 0%, var(--maroon-light) 50%, var(--maroon-mid) 100%);
+    border-radius: 20px;
+    padding: 2rem 2rem;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+.hero-banner::before {
+    content: '';
+    position: absolute; right: -60px; top: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+}
+.hero-banner::after {
+    content: '';
+    position: absolute; right: 20px; bottom: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+}
+.hero-banner .emoji {
+    position: absolute; right: 2rem; top: 50%;
+    transform: translateY(-50%);
+    font-size: 4.5rem;
+    opacity: 0.15;
+    z-index: 0;
+}
+.hero-banner h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem; }
+.hero-banner p { font-size: 0.85rem; opacity: 0.9; margin: 0; }
+.hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    font-size: 0.7rem;
+    padding: 0.25rem 0.8rem;
+    margin-bottom: 0.75rem;
+    backdrop-filter: blur(4px);
+}
+
+/* Stat Cards */
+.stat-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(7, 1fr);
     gap: 1rem;
     margin-bottom: 1.5rem;
-    }
-    @media (max-width: 900px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr; } }
+}
+@media (max-width: 1200px) { .stat-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 768px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .stat-grid { grid-template-columns: 1fr; } }
 
-    .stat-card {
-        background: #fff;
-        border: 1px solid rgba(0,0,0,0.08);
-        border-radius: 14px;
-        padding: 1.25rem;
-        transition: transform 0.18s, box-shadow 0.18s;
-        cursor: default;
-    }
-    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+.stat-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    padding: 1.25rem;
+    transition: all 0.25s ease;
+    cursor: default;
+}
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    border-color: var(--maroon-soft);
+}
 
-    .stat-icon {
-        width: 44px; height: 44px; border-radius: 12px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem; margin-bottom: 1rem; flex-shrink: 0;
-    }
-    .stat-icon.orange { background: rgba(229,90,43,0.12); color: #E55A2B; }
-    .stat-icon.green  { background: rgba(34,197,94,0.12);  color: #16A34A; }
-    .stat-icon.blue   { background: rgba(14,165,233,0.12); color: #0284C7; }
-    .stat-icon.amber  { background: rgba(245,158,11,0.12); color: #D97706; }
+.stat-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    flex-shrink: 0;
+}
+.stat-icon.maroon { background: rgba(123,24,24,0.12); color: var(--maroon); }
+.stat-icon.green  { background: rgba(34,197,94,0.12); color: #16A34A; }
+.stat-icon.blue   { background: rgba(14,165,233,0.12); color: #0284C7; }
+.stat-icon.gold   { background: rgba(201,146,58,0.12); color: var(--gold); }
 
-    .stat-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #999; margin-bottom: 0.3rem; }
-    .stat-value { font-size: 1.6rem; font-weight: 700; color: #1A1A1A; line-height: 1; margin-bottom: 0.4rem; }
-    .stat-value.sm { font-size: 1.15rem; }
-    .stat-trend { font-size: 0.72rem; display: flex; align-items: center; gap: 0.25rem; }
-    .trend-up { color: #16A34A; }
-    .trend-down { color: #DC2626; }
-    .trend-neutral { color: #999; }
+.stat-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: #999; margin-bottom: 0.3rem; }
+.stat-value { font-size: 1.6rem; font-weight: 700; color: #1A1A1A; line-height: 1; margin-bottom: 0.4rem; }
+.stat-value.sm { font-size: 1.2rem; }
+.stat-trend { font-size: 0.7rem; display: flex; align-items: center; gap: 0.25rem; }
+.trend-up { color: #16A34A; }
+.trend-down { color: #DC2626; }
+.trend-neutral { color: #999; }
 
-    /* ===== MINI SPARKLINE ===== */
-    .sparkline { height: 36px; width: 100%; }
+/* Quick Actions */
+.qa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+@media (max-width: 700px) { .qa-grid { grid-template-columns: repeat(2, 1fr); } }
 
-    /* ===== CHART SECTION ===== */
-    .chart-card { background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 14px; }
-    .chart-title { font-size: 0.85rem; font-weight: 700; }
-    .chart-sub { font-size: 0.72rem; color: #999; }
+.qa-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 14px;
+    padding: 1rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+}
+.qa-card:hover {
+    border-color: var(--maroon);
+    color: var(--maroon);
+    background: var(--maroon-soft);
+    transform: translateY(-2px);
+}
+.qa-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+.qa-icon.maroon { background: rgba(123,24,24,0.1); color: var(--maroon); }
+.qa-icon.green  { background: rgba(34,197,94,0.1); color: #16A34A; }
+.qa-icon.blue   { background: rgba(14,165,233,0.1); color: #0284C7; }
+.qa-icon.gold   { background: rgba(201,146,58,0.1); color: var(--gold); }
 
-    .bar-chart-wrap { display: flex; align-items: flex-end; gap: 6px; height: 100px; padding: 0 4px; }
-    .bar {
-        flex: 1; border-radius: 5px 5px 0 0;
-        position: relative; cursor: pointer;
-        transition: all 0.2s;
-        min-width: 0;
-    }
-    .bar:hover { filter: brightness(1.1); }
-    .bar-label { font-size: 0.6rem; color: #aaa; text-align: center; margin-top: 5px; }
-    .bar-labels { display: flex; gap: 6px; padding: 0 4px; }
-    .bar-labels span { flex: 1; font-size: 0.6rem; color: #bbb; text-align: center; }
+/* Chart Card */
+.chart-card {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 16px;
+    overflow: hidden;
+}
+.chart-title { font-size: 0.9rem; font-weight: 700; color: var(--maroon); }
+.chart-sub { font-size: 0.7rem; color: #999; margin-top: 2px; }
 
-    /* ===== ACTIVITY FEED ===== */
-    .activity-item {
-        display: flex; align-items: flex-start; gap: 0.75rem;
-        padding: 0.65rem 0;
-        border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-    .activity-item:last-child { border-bottom: none; }
-    .activity-dot {
-        width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
-    }
+/* Bar Chart */
+.bar-chart-wrap {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    height: 120px;
+    padding: 0 6px;
+}
+.bar {
+    flex: 1;
+    border-radius: 8px 8px 0 0;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 0;
+}
+.bar:hover { filter: brightness(0.95); transform: translateY(-2px); }
+.bar-label { font-size: 0.6rem; color: #aaa; text-align: center; margin-top: 8px; }
+.bar-labels { display: flex; gap: 8px; padding: 0 6px; margin-top: 4px; }
+.bar-labels span { flex: 1; font-size: 0.65rem; color: #bbb; text-align: center; font-weight: 500; }
 
-    /* ===== TOP PRODUCTS ===== */
-    .top-prod {
-        display: flex; align-items: center; gap: 0.75rem;
-        padding: 0.7rem 1.25rem;
-        border-bottom: 1px solid rgba(0,0,0,0.06);
-        transition: background 0.12s;
-    }
-    .top-prod:last-child { border-bottom: none; }
-    .top-prod:hover { background: #FAFAF9; }
-    .rank { width: 24px; height: 24px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
-    .rank-1 { background: rgba(234,179,8,0.15); color: #B45309; }
-    .rank-2 { background: rgba(156,163,175,0.15); color: #4B5563; }
-    .rank-3 { background: rgba(180,83,9,0.12); color: #92400E; }
-    .rank-n { background: rgba(0,0,0,0.06); color: #888; }
-    .prod-thumb { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
-    .prod-placeholder { width: 38px; height: 38px; border-radius: 10px; background: rgba(229,90,43,0.1); display: flex; align-items: center; justify-content: center; color: #E55A2B; font-size: 1rem; flex-shrink: 0; }
-    .prod-name { font-size: 0.8rem; font-weight: 600; }
-    .prod-cat { font-size: 0.68rem; color: #aaa; }
-    .prod-price { font-size: 0.78rem; font-weight: 700; color: #E55A2B; white-space: nowrap; }
+/* Table */
+.table th {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+    border-bottom-width: 1px;
+}
+.table td {
+    font-size: 0.8rem;
+    vertical-align: middle;
+    padding: 0.8rem 0.75rem;
+}
+.table a {
+    color: var(--maroon);
+    text-decoration: none;
+    font-weight: 600;
+}
+.table a:hover { text-decoration: underline; }
 
-    /* ===== PELANGGAN ===== */
-    .cust-item {
-        display: flex; align-items: center; gap: 0.75rem;
-        padding: 0.65rem 1.25rem;
-        border-bottom: 1px solid rgba(0,0,0,0.06);
-        transition: background 0.12s;
-    }
-    .cust-item:last-child { border-bottom: none; }
-    .cust-item:hover { background: #FAFAF9; }
-    .cust-avatar {
-        width: 36px; height: 36px; border-radius: 10px;
-        background: rgba(229,90,43,0.1); color: #E55A2B;
-        display: flex; align-items: center; justify-content: center;
-        font-weight: 700; font-size: 0.8rem; flex-shrink: 0;
-    }
+/* Badges */
+.badge-success { background: rgba(34,197,94,0.12); color: #15803D; font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; }
+.badge-warning { background: rgba(245,158,11,0.12); color: #B45309; font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; }
+.badge-danger  { background: rgba(239,68,68,0.12); color: #B91C1C; font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; }
+.badge-maroon  { background: rgba(123,24,24,0.12); color: var(--maroon); font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; }
 
-    /* ===== QUICK ACTIONS ===== */
-    .qa-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
-    @media (max-width: 700px) { .qa-grid { grid-template-columns: repeat(2, 1fr); } }
+/* Top Products */
+.top-prod {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: background 0.2s;
+}
+.top-prod:last-child { border-bottom: none; }
+.top-prod:hover { background: #FAFAF9; }
+.rank {
+    width: 26px;
+    height: 26px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+.rank-1 { background: rgba(201,146,58,0.2); color: var(--gold); }
+.rank-2 { background: rgba(156,163,175,0.15); color: #4B5563; }
+.rank-3 { background: rgba(123,24,24,0.12); color: var(--maroon); }
+.rank-n { background: rgba(0,0,0,0.06); color: #888; }
+.prod-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.prod-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(123,24,24,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--maroon);
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+.prod-name { font-size: 0.82rem; font-weight: 600; margin-bottom: 2px; }
+.prod-cat { font-size: 0.65rem; color: #aaa; }
+.prod-price {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--maroon);
+    white-space: nowrap;
+}
 
-    .qa-card {
-        background: #fff;
-        border: 1px solid rgba(0,0,0,0.08);
-        border-radius: 12px;
-        padding: 0.9rem 1rem;
-        display: flex; align-items: center; gap: 0.75rem;
-        font-size: 0.78rem; font-weight: 600; color: #333;
-        transition: all 0.15s; cursor: pointer;
-        text-decoration: none;
-    }
-    .qa-card:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); transform: translateY(-1px); }
-    .qa-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+/* Customers */
+.cust-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.7rem 1.25rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    transition: background 0.2s;
+}
+.cust-item:last-child { border-bottom: none; }
+.cust-item:hover { background: #FAFAF9; }
+.cust-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: rgba(123,24,24,0.1);
+    color: var(--maroon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+.cust-name { font-size: 0.8rem; font-weight: 600; margin-bottom: 2px; }
+.cust-email { font-size: 0.65rem; color: #aaa; }
 
-    /* ===== STATUS BADGES ===== */
-    .badge-success { background: rgba(34,197,94,0.12); color: #15803D; font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; }
-    .badge-warning { background: rgba(245,158,11,0.12); color: #B45309; font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; }
-    .badge-danger  { background: rgba(239,68,68,0.12);  color: #B91C1C; font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; }
-    .badge-orange  { background: rgba(229,90,43,0.12);  color: #C2410C; font-size: 0.68rem; font-weight: 600; padding: 0.25rem 0.6rem; border-radius: 20px; }
+/* Alert */
+.alert-warning {
+    background: rgba(201,146,58,0.1);
+    border: 1px solid rgba(201,146,58,0.2);
+    border-radius: 14px;
+    color: #B45309;
+}
+.alert-warning .fw-bold { color: var(--gold); }
 
-    /* ===== SECTION HEADER ===== */
-    .sec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
-    .sec-title { font-size: 0.88rem; font-weight: 700; }
-    .sec-link { font-size: 0.72rem; color: #E55A2B; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 2px; }
-    .sec-link:hover { text-decoration: underline; }
+/* Section Header */
+.sec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.sec-title { font-size: 0.9rem; font-weight: 700; color: var(--maroon); }
+.sec-link {
+    font-size: 0.7rem;
+    color: var(--maroon);
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+.sec-link:hover { text-decoration: underline; }
 
-    /* Donut chart */
-    .donut-wrap { display: flex; align-items: center; gap: 1.5rem; }
-    .donut-legend { font-size: 0.75rem; }
-    .legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+/* Legend */
+.legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
 </style>
 @endpush
 
 @section('content')
 
 {{-- Page Header --}}
-<div class="d-flex justify-content-between align-items-center mb-1">
+<div class="d-flex justify-content-between align-items-center mb-3">
     <div>
-        <h1 style="font-size:1.3rem;font-weight:700;margin-bottom:0.15rem;">Dashboard</h1>
-        <p style="color:#999;font-size:0.78rem;margin:0;">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}</p>
+        <h1 style="font-size:1.4rem;font-weight:700;margin-bottom:0.2rem;color:var(--maroon);">Dashboard</h1>
+        <p style="color:#999;font-size:0.8rem;margin:0;">{{ \Carbon\Carbon::now()->isoFormat('dddd, D MMMM Y') }}</p>
     </div>
 </div>
 
 {{-- Hero Banner --}}
 <div class="hero-banner">
     <span class="hero-badge">🇰🇷 Seoullicious Admin</span>
-    <h2>Annyeonghaseyo, {{ auth()->user()->nama ?? 'Admin' }}! 👋</h2>
+    <h2>Annyeonghaseyo, {{ auth()->user()->name ?? 'Admin' }}! 👋</h2>
     <p>Berikut ringkasan performa toko makanan Korea kamu hari ini.</p>
     <div class="emoji">🍜</div>
 </div>
 
+{{-- Promo Alert --}}
 @if($promoEndingSoon->count())
-
-<div class="alert alert-warning border-0 shadow-sm mb-3"
-     style="border-radius:14px;">
-
+<div class="alert alert-warning border-0 shadow-sm mb-3" style="border-radius:14px;">
     <div class="d-flex align-items-center gap-2">
-
-        <i class="ti ti-alert-triangle"
-           style="font-size:1.2rem;"></i>
-
+        <i class="ti ti-alert-triangle" style="font-size:1.2rem;"></i>
         <div>
-
-            <div class="fw-bold">
-                Promo Akan Berakhir
-            </div>
-
+            <div class="fw-bold">Promo Akan Berakhir</div>
             <div style="font-size:.85rem;">
-
                 @foreach($promoEndingSoon as $promo)
-
-                    <div>
-                        🎁 {{ $promo->nama_promo }}
-                        berakhir pada
-                        {{ \Carbon\Carbon::parse($promo->tanggal_selesai)->format('d M Y') }}
-                    </div>
-
+                    <div>🎁 {{ $promo->nama_promo }} berakhir pada {{ \Carbon\Carbon::parse($promo->tanggal_selesai)->format('d M Y') }}</div>
                 @endforeach
-
             </div>
-
         </div>
-
     </div>
 </div>
-
 @endif
+
 {{-- Stat Cards --}}
-<div class="stat-grid" style="grid-template-columns: repeat(7, 1fr);">
+<div class="stat-grid">
     <div class="stat-card">
-        <div class="stat-icon orange"><i class="ti ti-bowl-chopsticks"></i></div>
+        <div class="stat-icon maroon"><i class="ti ti-bowl-chopsticks"></i></div>
         <div class="stat-label">Total Produk</div>
         <div class="stat-value">{{ $totalProduk ?? 0 }}</div>
         <div class="stat-trend trend-neutral"><i class="ti ti-point-filled"></i> Menu tersedia</div>
@@ -267,107 +377,68 @@
     </div>
 
     <div class="stat-card">
-        <div class="stat-icon amber"><i class="ti ti-cash"></i></div>
+        <div class="stat-icon gold"><i class="ti ti-cash"></i></div>
         <div class="stat-label">Total Pendapatan</div>
         <div class="stat-value sm">Rp{{ number_format($totalPendapatan ?? 0, 0, ',', '.') }}</div>
         <div class="stat-trend trend-up"><i class="ti ti-trending-up"></i> Akumulasi</div>
     </div>
 
     <div class="stat-card">
-    <div class="stat-icon green">
-        <i class="ti ti-chart-line"></i>
+        <div class="stat-icon maroon"><i class="ti ti-chart-line"></i></div>
+        <div class="stat-label">Total Profit</div>
+        <div class="stat-value sm">Rp{{ number_format($totalProfit ?? 0, 0, ',', '.') }}</div>
+        <div class="stat-trend trend-up"><i class="ti ti-trending-up"></i> Keuntungan bersih</div>
     </div>
 
-    <div class="stat-label">Total Profit</div>
-
-    <div class="stat-value sm">
-        Rp{{ number_format($totalProfit ?? 0, 0, ',', '.') }}
+    <div class="stat-card">
+        <div class="stat-icon blue"><i class="ti ti-calendar-week"></i></div>
+        <div class="stat-label">Minggu Ini</div>
+        <div class="stat-value sm">Rp{{ number_format($weeklyIncome ?? 0, 0, ',', '.') }}</div>
+        <div class="stat-trend trend-up"><i class="ti ti-arrow-up"></i> Pendapatan mingguan</div>
     </div>
 
-    <div class="stat-trend trend-up">
-        <i class="ti ti-trending-up"></i>
-        Keuntungan bersih
+    <div class="stat-card">
+        <div class="stat-icon gold"><i class="ti ti-calendar-month"></i></div>
+        <div class="stat-label">Bulan Ini</div>
+        <div class="stat-value sm">Rp{{ number_format($monthlyIncome ?? 0, 0, ',', '.') }}</div>
+        <div class="stat-trend trend-up"><i class="ti ti-chart-bar"></i> Pendapatan bulanan</div>
     </div>
-</div>
-
-<div class="stat-card">
-    <div class="stat-icon blue">
-        <i class="ti ti-calendar-week"></i>
-    </div>
-
-    <div class="stat-label">Minggu Ini</div>
-
-    <div class="stat-value sm">
-        Rp{{ number_format($weeklyIncome ?? 0, 0, ',', '.') }}
-    </div>
-
-    <div class="stat-trend trend-up">
-        <i class="ti ti-arrow-up"></i>
-        Pendapatan mingguan
-    </div>
-</div>
-
-<div class="stat-card">
-    <div class="stat-icon orange">
-        <i class="ti ti-calendar-month"></i>
-    </div>
-
-    <div class="stat-label">Bulan Ini</div>
-
-    <div class="stat-value sm">
-        Rp{{ number_format($monthlyIncome ?? 0, 0, ',', '.') }}
-    </div>
-
-    <div class="stat-trend trend-up">
-        <i class="ti ti-chart-bar"></i>
-        Pendapatan bulanan
-    </div>
-</div>
 </div>
 
 {{-- Quick Actions --}}
 <div class="qa-grid">
     <a href="{{ route('admin.produk.create') }}" class="qa-card">
-        <div class="qa-icon" style="background:rgba(229,90,43,0.1);color:#E55A2B;"><i class="ti ti-plus"></i></div>
+        <div class="qa-icon maroon"><i class="ti ti-plus"></i></div>
         Tambah Produk
     </a>
     <a href="{{ route('admin.kategori.index') }}" class="qa-card">
-        <div class="qa-icon" style="background:rgba(34,197,94,0.1);color:#16A34A;"><i class="ti ti-tag"></i></div>
+        <div class="qa-icon green"><i class="ti ti-tag"></i></div>
         Kategori
     </a>
     <a href="{{ route('admin.transaksi.index') }}" class="qa-card">
-        <div class="qa-icon" style="background:rgba(14,165,233,0.1);color:#0284C7;"><i class="ti ti-receipt"></i></div>
+        <div class="qa-icon blue"><i class="ti ti-receipt"></i></div>
         Transaksi
     </a>
     <a href="{{ route('admin.pelanggan.index') }}" class="qa-card">
-        <div class="qa-icon" style="background:rgba(245,158,11,0.1);color:#D97706;"><i class="ti ti-users"></i></div>
+        <div class="qa-icon gold"><i class="ti ti-users"></i></div>
         Pelanggan
     </a>
-    <!-- <a href="{{ route('admin.trash') }}" class="qa-card">
-        <div class="qa-icon" style="background:rgba(239,68,68,0.1);color:#EF4444;">
-            <i class="ti ti-trash"></i>
-        </div>
-        Trash
-    </a> -->
 </div>
 
 {{-- Main Grid --}}
 <div class="row g-3 mb-3">
-
     {{-- Transaksi Chart --}}
     <div class="col-12 col-lg-7">
         <div class="chart-card h-100">
-            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.07);">
+            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.06);">
                 <div>
-                    <div class="chart-title">Transaksi per Bulan</div>
+                    <div class="chart-title">📊 Transaksi per Bulan</div>
                     <div class="chart-sub">Performa 6 bulan terakhir</div>
                 </div>
-                <span class="badge-orange">2025</span>
+                <span class="badge-maroon">{{ now()->year }}</span>
             </div>
             <div class="px-4 py-3">
-                <div class="bar-chart-wrap" id="monthChart">
-                    {{-- Bars filled by JS --}}
-                </div>
+                <div class="bar-chart-wrap" id="monthChart"></div>
                 <div class="bar-labels" id="monthLabels"></div>
             </div>
         </div>
@@ -376,8 +447,8 @@
     {{-- Stok Overview --}}
     <div class="col-12 col-lg-5">
         <div class="chart-card h-100">
-            <div class="px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.07);">
-                <div class="chart-title">Ringkasan Stok</div>
+            <div class="px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.06);">
+                <div class="chart-title">📦 Ringkasan Stok</div>
                 <div class="chart-sub">Status ketersediaan produk</div>
             </div>
             <div class="px-4 py-4">
@@ -412,24 +483,24 @@
                     </svg>
                     <div style="flex:1;">
                         <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span style="font-size:0.78rem;"><span class="legend-dot" style="background:#22C55E;"></span>Stok Aman</span>
+                            <span style="font-size:0.78rem;"><span class="legend-dot" style="background:#22C55E;"></span>Stok Aman (&gt;10)</span>
                             <span style="font-size:0.78rem;font-weight:700;">{{ $stokAman }}</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span style="font-size:0.78rem;"><span class="legend-dot" style="background:#F59E0B;"></span>Hampir Habis</span>
+                            <span style="font-size:0.78rem;"><span class="legend-dot" style="background:#F59E0B;"></span>Hampir Habis (1-10)</span>
                             <span style="font-size:0.78rem;font-weight:700;">{{ $stokSedikit }}</span>
                         </div>
                         <div class="d-flex align-items-center justify-content-between">
-                            <span style="font-size:0.78rem;"><span class="legend-dot" style="background:#EF4444;"></span>Habis</span>
+                            <span style="font-size:0.78rem;"><span class="legend-dot" style="background:#EF4444;"></span>Habis (0)</span>
                             <span style="font-size:0.78rem;font-weight:700;">{{ $stokHabis }}</span>
                         </div>
                     </div>
                 </div>
                 @if($stokHabis > 0)
-                <div class="d-flex align-items-center gap-2 p-2" style="background:rgba(239,68,68,0.07);border-radius:8px;border:1px solid rgba(239,68,68,0.15);">
+                <div class="d-flex align-items-center gap-2 p-2" style="background:rgba(239,68,68,0.07);border-radius:10px;border:1px solid rgba(239,68,68,0.15);">
                     <i class="ti ti-alert-triangle" style="color:#EF4444;font-size:0.9rem;"></i>
                     <span style="font-size:0.72rem;color:#B91C1C;">{{ $stokHabis }} produk kehabisan stok</span>
-                    <a href="{{ route('admin.produk.index') }}" style="font-size:0.72rem;color:#E55A2B;font-weight:600;margin-left:auto;">Cek →</a>
+                    <a href="{{ route('admin.produk.index') }}" style="font-size:0.72rem;color:var(--maroon);font-weight:600;margin-left:auto;">Cek →</a>
                 </div>
                 @endif
             </div>
@@ -443,7 +514,7 @@
     {{-- Transaksi Terbaru --}}
     <div class="col-12 col-lg-7">
         <div class="chart-card">
-            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.07);">
+            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.06);">
                 <div class="chart-title">🧾 Transaksi Terbaru</div>
                 <a href="{{ route('admin.transaksi.index') }}" class="sec-link">Semua <i class="ti ti-arrow-right"></i></a>
             </div>
@@ -462,27 +533,24 @@
                         @forelse($transaksiTerbaru ?? [] as $t)
                         <tr>
                             <td>
-                            <a href="{{ route('admin.transaksi.show', $t->id) }}"
-                            style="color:#E55A2B;font-weight:600;font-size:0.78rem;">
-                                #TRX-{{ str_pad($t->id, 4, '0', STR_PAD_LEFT) }}
-                            </a>
-                        </td>
-                        <td>{{ $t->user->name ?? '-' }}</td>
-                        <td style="font-weight:600;">Rp{{ number_format($t->total_harga, 0, ',', '.') }}</td>
-                        <td>
-                            @if($t->approval_status == 'pending')
-                                <span class="badge-warning">⏳ Pending</span>
-                            @elseif($t->approval_status == 'approved')
-                                <span class="badge-success">✅ Approved</span>
-                            @elseif($t->approval_status == 'rejected')
-                                <span class="badge-danger">❌ Rejected</span>
-                            @elseif($t->approval_status == 'completed')
-                                <span class="badge-info">🎉 Completed</span>
-                            @else
-                                <span class="badge-secondary">{{ $t->status }}</span>
-                            @endif
-                        </td>
-                        <td style="color:#999;">{{ \Carbon\Carbon::parse($t->created_at)->format('d/m/Y') }}</td>
+                                <a href="{{ route('admin.transaksi.show', $t->id) }}" style="color:var(--maroon);font-weight:600;font-size:0.8rem;">
+                                    #TRX-{{ str_pad($t->id, 4, '0', STR_PAD_LEFT) }}
+                                </a>
+                            </td>
+                            <td>{{ $t->user->name ?? '-' }}</td>
+                            <td style="font-weight:600;">Rp{{ number_format($t->total_harga, 0, ',', '.') }}</td>
+                            <td>
+                                @if($t->approval_status == 'pending')
+                                    <span class="badge-warning">⏳ Pending</span>
+                                @elseif($t->approval_status == 'approved')
+                                    <span class="badge-success">✅ Approved</span>
+                                @elseif($t->approval_status == 'rejected')
+                                    <span class="badge-danger">❌ Rejected</span>
+                                @elseif($t->approval_status == 'completed')
+                                    <span class="badge-maroon">🎉 Completed</span>
+                                @endif
+                            </td>
+                            <td style="color:#999;">{{ \Carbon\Carbon::parse($t->created_at)->format('d/m/Y') }}</td>
                         </tr>
                         @empty
                         <tr>
@@ -503,14 +571,14 @@
 
         {{-- Top Produk --}}
         <div class="chart-card">
-            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.07);">
+            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.06);">
                 <div class="chart-title">🏆 Produk Terlaris</div>
                 <a href="{{ route('admin.produk.index') }}" class="sec-link">Semua <i class="ti ti-arrow-right"></i></a>
             </div>
-            @forelse($topProduk ?? [] as $i => $p)
+            @forelse($produkTerlaris ?? [] as $i => $p)
             <div class="top-prod">
                 <div class="rank {{ ['rank-1','rank-2','rank-3'][$i] ?? 'rank-n' }}">{{ $i+1 }}</div>
-                @if(isset($p->poto) && $p->poto)
+                @if($p->poto)
                     <img src="{{ asset('storage/'.$p->poto) }}" class="prod-thumb" alt="">
                 @else
                     <div class="prod-placeholder"><i class="ti ti-bowl-chopsticks"></i></div>
@@ -531,16 +599,16 @@
 
         {{-- Pelanggan Terbaru --}}
         <div class="chart-card">
-            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.07);">
+            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(0,0,0,0.06);">
                 <div class="chart-title">👥 Pelanggan Terbaru</div>
                 <a href="{{ route('admin.pelanggan.index') }}" class="sec-link">Semua <i class="ti ti-arrow-right"></i></a>
             </div>
             @forelse($pelangganTerbaru ?? [] as $u)
             <div class="cust-item">
-                <div class="cust-avatar">{{ strtoupper(substr($u->nama, 0, 1)) }}</div>
+                <div class="cust-avatar">{{ strtoupper(substr($u->name, 0, 1)) }}</div>
                 <div style="flex:1;min-width:0;">
-                    <div style="font-size:0.8rem;font-weight:600;" class="text-truncate">{{ $u->nama }}</div>
-                    <div style="font-size:0.7rem;color:#aaa;" class="text-truncate">{{ $u->email }}</div>
+                    <div class="cust-name text-truncate">{{ $u->name }}</div>
+                    <div class="cust-email text-truncate">{{ $u->email }}</div>
                 </div>
                 <div style="font-size:0.68rem;color:#bbb;white-space:nowrap;">
                     {{ \Carbon\Carbon::parse($u->created_at)->diffForHumans() }}
@@ -561,14 +629,17 @@
 
 @push('scripts')
 <script>
-// Bar chart transaksi per bulan (dummy data — ganti dengan data real dari controller)
-const months = ['Jan','Feb','Mar','Apr','Mei','Jun'];
+// Bar chart transaksi per bulan
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun'];
 const values = {!! json_encode($monthlyData ?? [12, 19, 8, 24, 17, 30]) !!};
-const max = Math.max(...values);
-const colors = ['#FDDCCC','#FBBFA3','#F9A17A','#F68252','#F4622A','#E55A2B'];
+const max = Math.max(...values, 1);
+const colors = ['#FDDCCC', '#FBBFA3', '#F9A17A', '#F68252', '#F4622A', '#E55A2B'];
 
 const chartEl = document.getElementById('monthChart');
 const labelsEl = document.getElementById('monthLabels');
+
+chartEl.innerHTML = '';
+labelsEl.innerHTML = '';
 
 values.forEach((v, i) => {
     const pct = (v / max) * 100;
