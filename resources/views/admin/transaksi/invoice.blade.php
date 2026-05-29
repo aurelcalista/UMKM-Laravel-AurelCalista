@@ -306,7 +306,7 @@
                 <div class="brand-info">
                     <h1>Seoullicious</h1>
                     <p>Authentic Korean Restaurant & Delivery</p>
-                    <p>📍 Jakarta, Indonesia</p>
+                    <p>📍 Cirebon, Indonesia</p>
                 </div>
             </div>
             <div class="invoice-title">

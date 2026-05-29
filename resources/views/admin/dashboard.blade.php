@@ -5,9 +5,7 @@
 @push('styles')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 <style>
-/* ============================================
-   DASHBOARD SEOULLICIOUS - WARNA MAROON
-============================================ */
+
 :root {
     --maroon: #7B1818;
     --maroon-light: #9E2020;

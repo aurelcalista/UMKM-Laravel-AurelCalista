@@ -204,6 +204,17 @@ class CartController extends Controller
 
 public function checkoutProcess(Request $request)
 {
+
+    $request->validate([
+        'nama'          => 'required|string|max:255',
+        'telepon'       => 'required|string|max:20',
+        'alamat'        => 'nullable|string|max:255',
+        'metode_kirim'  => 'required|string',
+        'metode_bayar'  => 'required|string',
+        'catatan'       => 'nullable|string|max:500',
+        'bukti_bayar'   => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // <-- TAMBAHKAN INI
+    ]);
+
     $cart = Session::get('cart', []);
     
     if (empty($cart)) {
@@ -216,8 +227,16 @@ public function checkoutProcess(Request $request)
         $total += $item['harga'] * $item['jumlah'];
     }
 
+    $buktiPath = null;
+    if ($request->hasFile('bukti_bayar')) {
+        $buktiPath = $request->file('bukti_bayar')->store('bukti_bayar', 'public');
+        
+        // DEBUG: Cek apakah file tersimpan
+        Log::info('Bukti bayar disimpan di: ' . $buktiPath);
+    }
+
     try {
-        // Insert transaksi
+  
         $transaksi = new Transaksi();
         $transaksi->user_id = auth()->id();
         $transaksi->total_harga = $total;
@@ -228,6 +247,7 @@ public function checkoutProcess(Request $request)
         $transaksi->metode_kirim = $request->metode_kirim;
         $transaksi->alamat = $request->alamat ?? '';
         $transaksi->catatan = $request->catatan ?? '';
+        $transaksi->bukti_bayar = $buktiPath; 
         $transaksi->save();
 
         // Insert detail
